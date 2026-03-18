@@ -73,12 +73,17 @@ const toggleButtonClass = (mode: HeroMode) => {
         ]"
         view-box="-96 -224 1632 1145"
         color="magenta"
-        class="absolute inset-0 z-0 h-full w-full translate-x-20 opacity-100"
+        class="absolute inset-0 z-[1] h-full w-full translate-x-24 opacity-100"
       />
 
       <DecorativeLine
-        :start="{ x: 11.797927461139892, y: -96 }"
+        :start="{ x: -20.803108808290162, y: -167.5 }"
         :segments="[
+          {
+            c1: { x: -9.936096718480143, y: -143.66666666666666 },
+            c2: { x: 0.9309153713298735, y: -119.83333333333333 },
+            end: { x: 11.797927461139892, y: -96 },
+          },
           {
             c1: { x: 22.66493955094991, y: -72.16666666666667 },
             c2: { x: 51.46632124352331, y: -9 },
@@ -97,7 +102,105 @@ const toggleButtonClass = (mode: HeroMode) => {
         ]"
         view-box="-96 -96 1632 1017"
         color="purple"
-        class="absolute inset-0 z-0 h-full w-full -translate-x-20 opacity-100"
+        class="absolute inset-0 z-[2] h-full w-full -translate-x-24 translate-y-8 opacity-100"
+      />
+
+      <DecorativeLine
+        :start="{ x: -96, y: 29.57894736842104 }"
+        :segments="[
+          {
+            c1: { x: -79.33333333333333, y: 57.649122807017534 },
+            c2: { x: -38, y: 127.26315789473684 },
+            end: { x: 4, y: 198 },
+          },
+          {
+            c1: { x: 46, y: 268.7368421052632 },
+            c2: { x: 100.66666666666666, y: 381.1666666666667 },
+            end: { x: 156, y: 454 },
+          },
+          {
+            c1: { x: 211.33333333333334, y: 526.8333333333334 },
+            c2: { x: 357, y: 625 },
+            end: { x: 336, y: 635 },
+          },
+          {
+            c1: { x: 315, y: 645 },
+            c2: { x: 29.833333333333332, y: 487.1666666666667 },
+            end: { x: 30, y: 514 },
+          },
+          {
+            c1: { x: 30.166666666666668, y: 540.8333333333334 },
+            c2: { x: 341, y: 757.1666666666666 },
+            end: { x: 337, y: 796 },
+          },
+          {
+            c1: { x: 333, y: 834.8333333333334 },
+            c2: { x: 78.16666666666667, y: 757.6832829808661 },
+            end: { x: 6, y: 747 },
+          },
+          {
+            c1: { x: -66.16666666666667, y: 736.3167170191339 },
+            c2: { x: -79, y: 734.416918429003 },
+            end: { x: -96, y: 731.9003021148036 },
+          },
+        ]"
+        view-box="-96 -96 1632 1017"
+        color="green"
+        class="absolute inset-0 z-0 h-full w-full -translate-x-32 translate-y-8 opacity-100"
+      />
+
+      <DecorativeLine
+        :start="{ x: -318, y: 768.1818181818182 }"
+        :segments="[
+          {
+            c1: { x: -299.5, y: 760.8939393939394 },
+            c2: { x: -262.5, y: 746.3181818181819 },
+            end: { x: -244, y: 739.030303030303 },
+          },
+          {
+            c1: { x: -225.5, y: 731.7424242424242 },
+            c2: { x: -188.5, y: 717.1666666666667 },
+            end: { x: -170, y: 709.8787878787879 },
+          },
+          {
+            c1: { x: -151.5, y: 702.5909090909091 },
+            c2: { x: -114.5, y: 688.0151515151515 },
+            end: { x: -96, y: 680.7272727272727 },
+          },
+          {
+            c1: { x: -77.5, y: 673.439393939394 },
+            c2: { x: -47.5, y: 661.6212121212121 },
+            end: { x: 15, y: 637 },
+          },
+          {
+            c1: { x: 77.5, y: 612.3787878787879 },
+            c2: { x: 224.33333333333334, y: 527.3333333333334 },
+            end: { x: 279, y: 533 },
+          },
+          {
+            c1: { x: 333.6666666666667, y: 538.6666666666666 },
+            c2: { x: 307, y: 660.6666666666666 },
+            end: { x: 343, y: 671 },
+          },
+          {
+            c1: { x: 379, y: 681.3333333333334 },
+            c2: { x: 445, y: 579.8333333333334 },
+            end: { x: 495, y: 595 },
+          },
+          {
+            c1: { x: 545, y: 610.1666666666666 },
+            c2: { x: 594.8483033932135, y: 707.6666666666666 },
+            end: { x: 643, y: 762 },
+          },
+          {
+            c1: { x: 691.1516966067865, y: 816.3333333333334 },
+            c2: { x: 760.4251497005988, y: 894.5 },
+            end: { x: 783.9101796407185, y: 921 },
+          },
+        ]"
+        view-box="-96 -96 1632 1017"
+        color="magenta"
+        class="absolute inset-0 z-[1] h-full w-full translate-x-32 translate-y-36 opacity-100"
       />
 
       <div class="relative z-10 mx-auto flex h-full max-w-6xl items-center justify-center px-6 md:px-10">
@@ -105,7 +208,7 @@ const toggleButtonClass = (mode: HeroMode) => {
           <img
             :src="currentLogo"
             alt="Eloqee"
-            class="w-full max-w-[780px] self-start transition-opacity duration-300 md:translate-x-6 md:translate-y-5 lg:max-w-[840px] lg:translate-x-12 lg:translate-y-8"
+            class="w-full max-w-[800px] self-start transition-opacity duration-300 md:translate-x-6 md:translate-y-5 lg:max-w-[860px] lg:translate-x-12 lg:translate-y-8"
           >
 
           <div class="w-full max-w-[640px] self-end text-left md:-translate-y-4 md:translate-x-1 lg:translate-x-2">
