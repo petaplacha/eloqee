@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<{
     { c1: { x: 116, y: 228 }, c2: { x: 170, y: 212 }, end: { x: 224, y: 236 } },
   ]),
   color: 'magenta',
-  strokeWidth: '4em',
+  strokeWidth: 'var(--decorative-line-stroke-width, 3.75em)',
   viewBox: '0 -24 210 260',
 })
 

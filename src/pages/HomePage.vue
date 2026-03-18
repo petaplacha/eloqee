@@ -29,13 +29,14 @@ const toggleButtonClass = (mode: HeroMode) => {
 <template>
   <main class="min-h-[100dvh] overflow-x-hidden bg-brand-paper text-brand-black">
     <section
-      class="relative h-[100dvh] w-full overflow-hidden transition-colors duration-300"
+      class="hero-section relative min-h-[100dvh] w-full overflow-hidden transition-colors duration-300"
       :class="isCompanyMode ? 'bg-brand-paper' : 'bg-brand-surface'"
     >
       <div
-        class="pointer-events-none absolute inset-y-0 left-1/2 h-full -translate-x-1/2"
-        style="width: calc(100dvh * 16 / 9)"
+        class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+        style="width: max(100vw, calc(100dvh * 16 / 9)); height: max(100dvh, calc(100vw * 9 / 16));"
       >
+        <div class="hero-lines relative h-full w-full">
       <DecorativeLine
         :start="{ x: 974.3695652173913, y: -500 }"
         :segments="[
@@ -206,25 +207,26 @@ const toggleButtonClass = (mode: HeroMode) => {
         color="magenta"
         class="absolute inset-0 z-[1] h-full w-full translate-x-32 translate-y-36 opacity-100"
       />
+        </div>
       </div>
 
-      <div class="relative z-10 mx-auto flex h-full max-w-6xl items-center justify-center px-6 md:px-10">
+      <div class="hero-content relative z-10 mx-auto flex min-h-[100dvh] w-full max-w-6xl items-center justify-center px-6 md:px-10">
         <div class="flex w-full max-w-5xl -translate-y-5 flex-col gap-6 md:-translate-y-8 lg:-translate-y-10">
           <img
             :src="currentLogo"
             alt="Eloqee"
-            class="w-full max-w-[800px] self-start transition-opacity duration-300 md:translate-x-6 md:translate-y-5 lg:max-w-[860px] lg:translate-x-12 lg:translate-y-8"
+            class="w-full max-w-[760px] self-start transition-opacity duration-300 md:translate-x-6 md:translate-y-5 lg:max-w-[817px] lg:translate-x-12 lg:translate-y-8"
           >
 
           <div class="w-full max-w-[640px] self-end text-left md:-translate-y-4 md:translate-x-1 lg:translate-x-2">
             <h1
-              class="text-3xl font-bold leading-tight transition-colors duration-300 md:text-5xl"
+              class="text-2xl font-bold leading-tight transition-colors duration-300 md:text-4xl"
               :class="isCompanyMode ? 'text-brand-black' : 'text-brand-white'"
             >
               Klíč, jak mít budoucnost trochu víc pod kontrolou!
             </h1>
             <p
-              class="mt-4 text-base leading-relaxed transition-colors duration-300 md:text-xl"
+              class="mt-4 text-sm leading-relaxed transition-colors duration-300 md:text-lg"
               :class="isCompanyMode ? 'text-brand-black/70' : 'text-brand-white/72'"
             >
               Budujeme generaci studentů s ambicí a měkkými kompetencemi, která mění svět. Staň se součástí a připrav se na budoucnost.
@@ -233,9 +235,9 @@ const toggleButtonClass = (mode: HeroMode) => {
         </div>
       </div>
 
-      <div class="absolute bottom-[8em] left-1/2 z-20 -translate-x-1/2">
+      <div class="hero-toggle absolute inset-x-0 bottom-6 z-20 flex justify-center px-3 sm:inset-x-auto sm:left-1/2 sm:w-auto sm:-translate-x-1/2 sm:px-0 sm:bottom-[8em]">
         <div
-          class="inline-flex rounded-full p-1 transition-colors duration-300"
+          class="inline-flex max-w-full justify-center rounded-full p-1 transition-colors duration-300"
           :class="isCompanyMode
             ? 'border border-brand-black/10 bg-brand-white shadow-[0_12px_40px_rgba(0,0,0,0.08)]'
             : 'border border-brand-white/12 bg-brand-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.2)] backdrop-blur-md'"
@@ -261,3 +263,57 @@ const toggleButtonClass = (mode: HeroMode) => {
     </section>
   </main>
 </template>
+
+<style scoped>
+.hero-lines {
+  --decorative-line-stroke-width: 3.75em;
+  transform: scale(1);
+  transform-origin: center;
+}
+
+@media (max-width: 48rem) {
+  .hero-lines {
+    --decorative-line-stroke-width: 2em;
+    transform: scale(0.8);
+  }
+}
+
+@media (max-height: 46rem) {
+  .hero-section {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-content {
+    min-height: auto;
+    flex: 1 0 auto;
+    padding-top: 2.5rem;
+    padding-bottom: 2rem;
+  }
+
+  .hero-toggle {
+    position: relative;
+    inset: auto;
+    left: auto;
+    bottom: auto;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+    transform: none;
+    box-sizing: border-box;
+    padding: 0 1.5rem 2.5rem;
+  }
+}
+
+@media (min-width: 48rem) and (max-height: 46rem) {
+  .hero-content {
+    padding-top: 4rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .hero-toggle {
+    padding-bottom: 8em;
+  }
+}
+</style>
