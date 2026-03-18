@@ -11,6 +11,65 @@ const heroMode = ref<HeroMode>('student')
 const isCompanyMode = computed(() => heroMode.value === 'company')
 const currentLogo = computed(() => (isCompanyMode.value ? companyLogo : studentLogo))
 
+const sidePurpleLine = {
+  start: { x: -20.803108808290162, y: -167.5 },
+  segments: [
+    {
+      c1: { x: -9.936096718480143, y: -143.66666666666666 },
+      c2: { x: 0.9309153713298735, y: -119.83333333333333 },
+      end: { x: 11.797927461139892, y: -96 },
+    },
+    {
+      c1: { x: 22.66493955094991, y: -72.16666666666667 },
+      c2: { x: 51.46632124352331, y: -9 },
+      end: { x: 77, y: 47 },
+    },
+    {
+      c1: { x: 102.53367875647669, y: 103 },
+      c2: { x: 193.83333333333334, y: 207.83333333333334 },
+      end: { x: 165, y: 240 },
+    },
+    {
+      c1: { x: 136.16666666666666, y: 272.1666666666667 },
+      c2: { x: -52.5, y: 240 },
+      end: { x: -96, y: 240 },
+    },
+  ],
+}
+
+const sidePurpleLineViewBox = '-96 -96 1632 1017'
+const mobileTopPurpleLine = {
+  start: { x: 452, y: 44 },
+  segments: [
+    {
+      c1: { x: 420, y: 38 },
+      c2: { x: 374, y: -4 },
+      end: { x: 316, y: 2 },
+    },
+    {
+      c1: { x: 258, y: 8 },
+      c2: { x: 248, y: 76 },
+      end: { x: 188, y: 82 },
+    },
+    {
+      c1: { x: 128, y: 88 },
+      c2: { x: 116, y: 22 },
+      end: { x: 62, y: 24 },
+    },
+    {
+      c1: { x: 18, y: 26 },
+      c2: { x: -4, y: 2 },
+      end: { x: -18, y: -42 },
+    },
+    {
+      c1: { x: -30, y: -78 },
+      c2: { x: -54, y: -116 },
+      end: { x: -92, y: -132 },
+    },
+  ],
+}
+const mobileTopPurpleLineViewBox = '-112 -200 300 284'
+
 const toggleButtonClass = (mode: HeroMode) => {
   const isActive = heroMode.value === mode
 
@@ -82,30 +141,9 @@ const toggleButtonClass = (mode: HeroMode) => {
       />
 
       <DecorativeLine
-        :start="{ x: -20.803108808290162, y: -167.5 }"
-        :segments="[
-          {
-            c1: { x: -9.936096718480143, y: -143.66666666666666 },
-            c2: { x: 0.9309153713298735, y: -119.83333333333333 },
-            end: { x: 11.797927461139892, y: -96 },
-          },
-          {
-            c1: { x: 22.66493955094991, y: -72.16666666666667 },
-            c2: { x: 51.46632124352331, y: -9 },
-            end: { x: 77, y: 47 },
-          },
-          {
-            c1: { x: 102.53367875647669, y: 103 },
-            c2: { x: 193.83333333333334, y: 207.83333333333334 },
-            end: { x: 165, y: 240 },
-          },
-          {
-            c1: { x: 136.16666666666666, y: 272.1666666666667 },
-            c2: { x: -52.5, y: 240 },
-            end: { x: -96, y: 240 },
-          },
-        ]"
-        view-box="-96 -96 1632 1017"
+        :start="sidePurpleLine.start"
+        :segments="sidePurpleLine.segments"
+        :view-box="sidePurpleLineViewBox"
         color="purple"
         class="absolute inset-0 z-[2] h-full w-full -translate-x-24 translate-y-8 opacity-100"
       />
@@ -210,6 +248,14 @@ const toggleButtonClass = (mode: HeroMode) => {
         </div>
       </div>
 
+      <DecorativeLine
+        :start="mobileTopPurpleLine.start"
+        :segments="mobileTopPurpleLine.segments"
+        :view-box="mobileTopPurpleLineViewBox"
+        color="purple"
+        class="hero-mobile-top-line pointer-events-none absolute z-[4] opacity-100"
+      />
+
       <div class="hero-content relative z-10 mx-auto flex min-h-[100dvh] w-full max-w-6xl items-center justify-center px-6 md:px-10">
         <div class="flex w-full max-w-5xl -translate-y-5 flex-col gap-6 md:-translate-y-8 lg:-translate-y-10">
           <img
@@ -265,15 +311,37 @@ const toggleButtonClass = (mode: HeroMode) => {
 </template>
 
 <style scoped>
-.hero-lines {
+.hero-section {
   --decorative-line-stroke-width: 3.75em;
+}
+
+.hero-lines {
   transform: scale(1);
   transform-origin: center;
 }
 
+.hero-mobile-top-line {
+  top: -1rem;
+  right: 0.5rem;
+  width: clamp(14rem, 30vw, 21rem);
+  height: clamp(5.5rem, 10vw, 7.5rem);
+  transform-origin: top right;
+}
+
 @media (max-width: 48rem) {
-  .hero-lines {
+  .hero-section {
     --decorative-line-stroke-width: 2em;
+  }
+
+  .hero-lines {
+    transform: scale(0.8);
+  }
+
+  .hero-mobile-top-line {
+    top: -1.75rem;
+    right: -0.75rem;
+    width: min(82vw, 21rem);
+    height: min(30vw, 8.5rem);
     transform: scale(0.8);
   }
 }
