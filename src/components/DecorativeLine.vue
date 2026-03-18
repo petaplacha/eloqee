@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
 type Point = { x: number; y: number }
 type BezierSegment = { c1: Point; c2: Point; end: Point }
+type DrawDirection = 'forward' | 'reverse'
 
 const props = withDefaults(defineProps<{
   start?: Point
@@ -10,6 +11,9 @@ const props = withDefaults(defineProps<{
   color?: 'magenta' | 'green' | 'purple' | string
   strokeWidth?: string
   viewBox?: string
+  drawDuration?: number
+  drawDelay?: number
+  drawDirection?: DrawDirection
 }>(), {
   start: () => ({ x: 0, y: -240 }),
   segments: () => ([
@@ -23,6 +27,9 @@ const props = withDefaults(defineProps<{
   color: 'magenta',
   strokeWidth: 'var(--decorative-line-stroke-width, 3.75em)',
   viewBox: '0 -24 210 260',
+  drawDuration: 0,
+  drawDelay: 0,
+  drawDirection: 'forward',
 })
 
 const palette = {
@@ -31,10 +38,43 @@ const palette = {
   purple: 'var(--color-brand-purple)',
 } as const
 
-const pathData = computed(() => {
-  const commands = [`M ${props.start.x} ${props.start.y}`]
+const pathRef = ref<SVGPathElement | null>(null)
+const drawAnimationRef = ref<SVGAnimateElement | null>(null)
+const drawLength = ref<number | null>(null)
 
-  for (const segment of props.segments) {
+const reversedSegments = computed<BezierSegment[]>(() => {
+  const segments: BezierSegment[] = []
+
+  for (let index = props.segments.length - 1; index >= 0; index -= 1) {
+    const segment = props.segments[index]
+    const previousPoint = index === 0 ? props.start : props.segments[index - 1].end
+
+    segments.push({
+      c1: segment.c2,
+      c2: segment.c1,
+      end: previousPoint,
+    })
+  }
+
+  return segments
+})
+
+const renderedStart = computed(() => {
+  if (props.drawDirection === 'reverse' && props.segments.length > 0) {
+    return props.segments[props.segments.length - 1].end
+  }
+
+  return props.start
+})
+
+const renderedSegments = computed(() => (
+  props.drawDirection === 'reverse' ? reversedSegments.value : props.segments
+))
+
+const pathData = computed(() => {
+  const commands = [`M ${renderedStart.value.x} ${renderedStart.value.y}`]
+
+  for (const segment of renderedSegments.value) {
     commands.push(
       `C ${segment.c1.x} ${segment.c1.y} ${segment.c2.x} ${segment.c2.y} ${segment.end.x} ${segment.end.y}`,
     )
@@ -44,6 +84,46 @@ const pathData = computed(() => {
 })
 
 const strokeColor = computed(() => palette[props.color as keyof typeof palette] ?? props.color)
+const shouldDraw = computed(() => props.drawDuration > 0 && drawLength.value !== null)
+const dashLength = computed(() => (drawLength.value === null ? undefined : String(drawLength.value)))
+
+const syncDrawAnimation = async () => {
+  await nextTick()
+
+  const path = pathRef.value
+
+  if (!path) return
+
+  const totalLength = path.getTotalLength()
+
+  if (!Number.isFinite(totalLength) || totalLength <= 0) {
+    drawLength.value = null
+    return
+  }
+
+  drawLength.value = totalLength
+
+  if (props.drawDuration <= 0) return
+
+  await nextTick()
+
+  path.setAttribute('stroke-dasharray', String(totalLength))
+  path.setAttribute('stroke-dashoffset', String(totalLength))
+  drawAnimationRef.value?.beginElementAt(props.drawDelay)
+}
+
+onMounted(() => {
+  void syncDrawAnimation()
+})
+
+watch([
+  pathData,
+  () => props.drawDuration,
+  () => props.drawDelay,
+  () => props.drawDirection,
+], () => {
+  void syncDrawAnimation()
+})
 </script>
 
 <template>
@@ -55,12 +135,27 @@ const strokeColor = computed(() => palette[props.color as keyof typeof palette] 
     class="pointer-events-none overflow-visible"
   >
     <path
+      ref="pathRef"
       :d="pathData"
       :stroke="strokeColor"
       :stroke-width="strokeWidth"
+      :stroke-dasharray="shouldDraw ? dashLength : undefined"
+      :stroke-dashoffset="shouldDraw ? dashLength : undefined"
       vector-effect="non-scaling-stroke"
       stroke-linecap="round"
       stroke-linejoin="round"
-    />
+    >
+      <animate
+        v-if="shouldDraw"
+        ref="drawAnimationRef"
+        attributeName="stroke-dashoffset"
+        :from="dashLength"
+        to="0"
+        :dur="`${props.drawDuration}s`"
+        begin="indefinite"
+        calcMode="linear"
+        fill="freeze"
+      />
+    </path>
   </svg>
 </template>

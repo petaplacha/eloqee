@@ -167,6 +167,8 @@ const toggleButtonClass = (mode: HeroMode) => {
             { c1: { x: 1460.8333333333333, y: 732.625 }, c2: { x: 1515.5, y: 743.625 }, end: { x: 1800, y: 747.75 } },
           ]"
           view-box="-96 -224 1632 1145"
+          :draw-duration="1.35"
+          :draw-delay="0.08"
           color="magenta"
           class="absolute inset-0 z-[1] h-full w-full translate-x-24 opacity-100"
         />
@@ -175,6 +177,9 @@ const toggleButtonClass = (mode: HeroMode) => {
           :start="sidePurpleLine.start"
           :segments="sidePurpleLine.segments"
           :view-box="sidePurpleLineViewBox"
+          :draw-duration="1.1"
+          :draw-delay="0.26"
+          draw-direction="reverse"
           color="purple"
           class="absolute inset-0 z-[2] h-full w-full -translate-x-24 translate-y-8 opacity-100"
         />
@@ -191,6 +196,8 @@ const toggleButtonClass = (mode: HeroMode) => {
             { c1: { x: -66.16666666666667, y: 736.3167170191339 }, c2: { x: -79, y: 734.416918429003 }, end: { x: -96, y: 731.9003021148036 } },
           ]"
           view-box="-96 -96 1632 1017"
+          :draw-duration="1.2"
+          :draw-delay="0.42"
           color="green"
           class="absolute inset-0 z-0 h-full w-full -translate-x-32 translate-y-8 opacity-100"
         />
@@ -209,6 +216,9 @@ const toggleButtonClass = (mode: HeroMode) => {
             { c1: { x: 691.1516966067865, y: 816.3333333333334 }, c2: { x: 760.4251497005988, y: 894.5 }, end: { x: 783.9101796407185, y: 921 } },
           ]"
           view-box="-96 -96 1632 1017"
+          :draw-duration="1.12"
+          :draw-delay="0.58"
+          draw-direction="reverse"
           color="magenta"
           class="absolute inset-0 z-[1] h-full w-full translate-x-32 translate-y-36 opacity-100"
         />
@@ -219,6 +229,9 @@ const toggleButtonClass = (mode: HeroMode) => {
       :start="mobileTopPurpleLine.start"
       :segments="mobileTopPurpleLine.segments"
       :view-box="mobileTopPurpleLineViewBox"
+      :draw-duration="0.95"
+      :draw-delay="0.2"
+      draw-direction="reverse"
       color="purple"
       class="hero-mobile-top-line pointer-events-none absolute z-[4] opacity-100"
     />
