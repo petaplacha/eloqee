@@ -27,11 +27,15 @@ const toggleButtonClass = (mode: HeroMode) => {
 </script>
 
 <template>
-  <main class="min-h-screen overflow-x-hidden bg-brand-paper text-brand-black">
+  <main class="min-h-[100dvh] overflow-x-hidden bg-brand-paper text-brand-black">
     <section
-      class="relative h-[100svh] max-h-[100svh] w-full max-w-[100vw] overflow-hidden transition-colors duration-300"
+      class="relative h-[100dvh] w-full overflow-hidden transition-colors duration-300"
       :class="isCompanyMode ? 'bg-brand-paper' : 'bg-brand-surface'"
     >
+      <div
+        class="pointer-events-none absolute inset-y-0 left-1/2 h-full -translate-x-1/2"
+        style="width: calc(100dvh * 16 / 9)"
+      >
       <DecorativeLine
         :start="{ x: 974.3695652173913, y: -500 }"
         :segments="[
@@ -202,6 +206,7 @@ const toggleButtonClass = (mode: HeroMode) => {
         color="magenta"
         class="absolute inset-0 z-[1] h-full w-full translate-x-32 translate-y-36 opacity-100"
       />
+      </div>
 
       <div class="relative z-10 mx-auto flex h-full max-w-6xl items-center justify-center px-6 md:px-10">
         <div class="flex w-full max-w-5xl -translate-y-5 flex-col gap-6 md:-translate-y-8 lg:-translate-y-10">
