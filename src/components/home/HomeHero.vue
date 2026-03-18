@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { animate } from 'motion'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import DecorativeLine from '../DecorativeLine.vue'
 import studentLogo from '../../assets/logo-bila.svg'
 import companyLogo from '../../assets/logo.svg'
@@ -10,6 +11,65 @@ const heroMode = ref<HeroMode>('student')
 
 const isCompanyMode = computed(() => heroMode.value === 'company')
 const currentLogo = computed(() => (isCompanyMode.value ? companyLogo : studentLogo))
+const headlineRef = ref<HTMLElement | null>(null)
+const bodyRef = ref<HTMLElement | null>(null)
+const heroTextElements = () => [headlineRef.value, bodyRef.value]
+
+const prepareHeroText = () => {
+  for (const element of heroTextElements()) {
+    if (!element) continue
+    element.style.opacity = '0'
+  }
+}
+
+const revealHeroText = () => {
+  for (const element of heroTextElements()) {
+    if (!element) continue
+
+    element.style.opacity = '1'
+  }
+}
+
+const fadeElementIn = (element: HTMLElement, delay = 0) => {
+  return animate(0, 1, {
+    duration: 0.7,
+    delay,
+    ease: 'easeOut',
+    onUpdate: (latest) => {
+      if (!element.isConnected) return
+      element.style.opacity = String(latest)
+    },
+  })
+}
+
+let headlineAnimation: ReturnType<typeof animate> | null = null
+let bodyAnimation: ReturnType<typeof animate> | null = null
+let animationFrameId: number | null = null
+let animationTimeoutId: number | null = null
+
+onMounted(() => {
+  if (!headlineRef.value || !bodyRef.value) return
+
+  prepareHeroText()
+
+  animationFrameId = requestAnimationFrame(() => {
+    animationTimeoutId = window.setTimeout(() => {
+      if (!headlineRef.value || !bodyRef.value) return
+
+      headlineAnimation = fadeElementIn(headlineRef.value)
+      bodyAnimation = fadeElementIn(bodyRef.value, 0.18)
+
+      bodyAnimation.then(revealHeroText)
+    }, 160)
+  })
+})
+
+onBeforeUnmount(() => {
+  if (animationFrameId !== null) cancelAnimationFrame(animationFrameId)
+  if (animationTimeoutId !== null) window.clearTimeout(animationTimeoutId)
+  headlineAnimation?.stop()
+  bodyAnimation?.stop()
+})
 
 const sidePurpleLine = {
   start: { x: -20.803108808290162, y: -167.5 },
@@ -172,18 +232,20 @@ const toggleButtonClass = (mode: HeroMode) => {
           height="1383"
           fetchpriority="high"
           decoding="async"
-          class="w-full max-w-[760px] self-start transition-opacity duration-300 md:translate-x-6 md:translate-y-5 lg:max-w-[817px] lg:translate-x-12 lg:translate-y-8"
+          class="select-none w-full max-w-[760px] self-start transition-opacity duration-300 md:translate-x-6 md:translate-y-5 lg:max-w-[817px] lg:translate-x-12 lg:translate-y-8"
         >
 
         <div class="w-full max-w-[640px] self-end text-left md:-translate-y-4 md:translate-x-1 lg:translate-x-2">
           <h1
-            class="text-2xl font-bold leading-tight transition-colors duration-300 md:text-4xl"
+            ref="headlineRef"
+            class="hero-text-reveal text-2xl font-bold leading-tight transition-colors duration-300 md:text-4xl"
             :class="isCompanyMode ? 'text-brand-black' : 'text-brand-white'"
           >
             Klíč, jak mít budoucnost trochu víc pod kontrolou!
           </h1>
           <p
-            class="mt-4 text-sm leading-relaxed transition-colors duration-300 md:text-lg"
+            ref="bodyRef"
+            class="hero-text-reveal mt-4 text-sm leading-relaxed transition-colors duration-300 md:text-lg"
             :class="isCompanyMode ? 'text-brand-black/70' : 'text-brand-white/72'"
           >
             Budujeme generaci studentů s ambicí a měkkými kompetencemi, která mění svět. Staň se součástí a připrav se na budoucnost.
@@ -192,16 +254,16 @@ const toggleButtonClass = (mode: HeroMode) => {
       </div>
     </div>
 
-    <div class="hero-toggle absolute inset-x-0 bottom-6 z-20 flex justify-center px-3 sm:inset-x-auto sm:left-1/2 sm:w-auto sm:-translate-x-1/2 sm:px-0 sm:bottom-[8em]">
+    <div class="hero-toggle select-none absolute inset-x-0 bottom-6 z-20 flex justify-center px-3 sm:inset-x-auto sm:left-1/2 sm:w-auto sm:-translate-x-1/2 sm:px-0 sm:bottom-[8em]">
       <div
-        class="inline-flex max-w-full justify-center rounded-full p-1 transition-colors duration-300"
+        class="inline-flex max-w-full justify-center rounded-full p-1.5 transition-colors duration-300"
         :class="isCompanyMode
           ? 'border border-brand-black/10 bg-brand-white shadow-[0_12px_40px_rgba(0,0,0,0.08)]'
           : 'border border-brand-white/12 bg-brand-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.2)] backdrop-blur-md'"
       >
         <button
           type="button"
-          class="rounded-full px-5 py-2 text-sm font-semibold transition-colors duration-300"
+          class="rounded-full px-8 py-3 text-base font-semibold transition-colors duration-300 md:px-9 md:py-3.5 md:text-lg"
           :class="toggleButtonClass('student')"
           @click="heroMode = 'student'"
         >
@@ -209,7 +271,7 @@ const toggleButtonClass = (mode: HeroMode) => {
         </button>
         <button
           type="button"
-          class="rounded-full px-5 py-2 text-sm font-semibold transition-colors duration-300"
+          class="rounded-full px-8 py-3 text-base font-semibold transition-colors duration-300 md:px-9 md:py-3.5 md:text-lg"
           :class="toggleButtonClass('company')"
           @click="heroMode = 'company'"
         >
@@ -231,11 +293,23 @@ const toggleButtonClass = (mode: HeroMode) => {
 }
 
 .hero-mobile-top-line {
+  display: none;
   top: -1rem;
   right: 0.5rem;
   width: clamp(14rem, 30vw, 21rem);
   height: clamp(5.5rem, 10vw, 7.5rem);
   transform-origin: top right;
+}
+
+.hero-text-reveal {
+  opacity: 0;
+  will-change: opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-text-reveal {
+    will-change: auto;
+  }
 }
 
 @media (max-width: 48rem) {
@@ -248,6 +322,7 @@ const toggleButtonClass = (mode: HeroMode) => {
   }
 
   .hero-mobile-top-line {
+    display: block;
     top: -1.75rem;
     right: -0.75rem;
     width: min(82vw, 21rem);
