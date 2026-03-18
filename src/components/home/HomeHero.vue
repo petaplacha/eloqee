@@ -1,19 +1,45 @@
 <script setup lang="ts">
 import { animate } from 'motion'
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import DecorativeLine from '../DecorativeLine.vue'
 import studentLogo from '../../assets/logo-bila.svg'
 import companyLogo from '../../assets/logo.svg'
 
 type HeroMode = 'student' | 'company'
 
-const heroMode = ref<HeroMode>('student')
+const route = useRoute()
+
+const heroCopy: Record<HeroMode, { headline: string; body: string }> = {
+  student: {
+    headline: 'Klíč, jak mít budoucnost trochu víc pod kontrolou!',
+    body: 'Budujeme generaci studentů s ambicí a měkkými kompetencemi, která mění svět. Staň se součástí a připrav se na budoucnost.',
+  },
+  company: {
+    headline: 'Klíč k talentům, kteří posunou vaši firmu dál!',
+    body: 'Propojujeme firmy s generací ambiciózních lidí, kteří jsou připraveni na reálný byznys. Zapojte se a buďte u jejich růstu od začátku.',
+  },
+}
+
+const normalizeHeroMode = (value: unknown): HeroMode => {
+  const normalized = Array.isArray(value) ? value[0] : value
+
+  return normalized === 'company' ? 'company' : 'student'
+}
+
+const heroMode = ref<HeroMode>(normalizeHeroMode(route.query.mode))
 
 const isCompanyMode = computed(() => heroMode.value === 'company')
 const currentLogo = computed(() => (isCompanyMode.value ? companyLogo : studentLogo))
+const currentHeroCopy = computed(() => heroCopy[heroMode.value])
 const headlineRef = ref<HTMLElement | null>(null)
 const bodyRef = ref<HTMLElement | null>(null)
+const togglePillRef = ref<HTMLElement | null>(null)
 const heroTextElements = () => [headlineRef.value, bodyRef.value]
+
+watch(() => route.query.mode, (mode) => {
+  heroMode.value = normalizeHeroMode(mode)
+})
 
 const prepareHeroText = () => {
   for (const element of heroTextElements()) {
@@ -30,7 +56,7 @@ const revealHeroText = () => {
   }
 }
 
-const fadeElementIn = (element: HTMLElement, delay = 0) => {
+const animateElementIn = (element: HTMLElement, delay = 0, yOffset = 0) => {
   return animate(0, 1, {
     duration: 0.7,
     delay,
@@ -38,12 +64,17 @@ const fadeElementIn = (element: HTMLElement, delay = 0) => {
     onUpdate: (latest) => {
       if (!element.isConnected) return
       element.style.opacity = String(latest)
+
+      if (yOffset > 0) {
+        element.style.transform = `translateY(${(1 - latest) * yOffset}px)`
+      }
     },
   })
 }
 
 let headlineAnimation: ReturnType<typeof animate> | null = null
 let bodyAnimation: ReturnType<typeof animate> | null = null
+let toggleAnimation: ReturnType<typeof animate> | null = null
 let animationFrameId: number | null = null
 let animationTimeoutId: number | null = null
 
@@ -56,8 +87,12 @@ onMounted(() => {
     animationTimeoutId = window.setTimeout(() => {
       if (!headlineRef.value || !bodyRef.value) return
 
-      headlineAnimation = fadeElementIn(headlineRef.value)
-      bodyAnimation = fadeElementIn(bodyRef.value, 0.18)
+      headlineAnimation = animateElementIn(headlineRef.value)
+      bodyAnimation = animateElementIn(bodyRef.value, 0.18)
+
+      if (togglePillRef.value) {
+        toggleAnimation = animateElementIn(togglePillRef.value, 0.34, 24)
+      }
 
       bodyAnimation.then(revealHeroText)
     }, 160)
@@ -69,6 +104,7 @@ onBeforeUnmount(() => {
   if (animationTimeoutId !== null) window.clearTimeout(animationTimeoutId)
   headlineAnimation?.stop()
   bodyAnimation?.stop()
+  toggleAnimation?.stop()
 })
 
 const sidePurpleLine = {
@@ -254,14 +290,14 @@ const toggleButtonClass = (mode: HeroMode) => {
             class="hero-text-reveal text-2xl font-bold leading-tight transition-colors duration-300 md:text-4xl"
             :class="isCompanyMode ? 'text-brand-black' : 'text-brand-white'"
           >
-            Klíč, jak mít budoucnost trochu víc pod kontrolou!
+            {{ currentHeroCopy.headline }}
           </h1>
           <p
             ref="bodyRef"
             class="hero-text-reveal mt-4 text-sm leading-relaxed transition-colors duration-300 md:text-lg"
             :class="isCompanyMode ? 'text-brand-black/70' : 'text-brand-white/72'"
           >
-            Budujeme generaci studentů s ambicí a měkkými kompetencemi, která mění svět. Staň se součástí a připrav se na budoucnost.
+            {{ currentHeroCopy.body }}
           </p>
         </div>
       </div>
@@ -269,7 +305,8 @@ const toggleButtonClass = (mode: HeroMode) => {
 
     <div class="hero-toggle select-none absolute inset-x-0 bottom-6 z-20 flex justify-center px-3 sm:inset-x-auto sm:left-1/2 sm:w-auto sm:-translate-x-1/2 sm:px-0 sm:bottom-[8em]">
       <div
-        class="inline-flex max-w-full justify-center rounded-full p-1.5 transition-colors duration-300"
+        ref="togglePillRef"
+        class="hero-toggle-pill-reveal inline-flex max-w-full justify-center rounded-full p-1.5 transition-colors duration-300"
         :class="isCompanyMode
           ? 'border border-brand-black/10 bg-brand-white shadow-[0_12px_40px_rgba(0,0,0,0.08)]'
           : 'border border-brand-white/12 bg-brand-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.2)] backdrop-blur-md'"
@@ -319,8 +356,18 @@ const toggleButtonClass = (mode: HeroMode) => {
   will-change: opacity;
 }
 
+.hero-toggle-pill-reveal {
+  opacity: 0;
+  transform: translateY(1.5rem);
+  will-change: opacity, transform;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-text-reveal {
+    will-change: auto;
+  }
+
+  .hero-toggle-pill-reveal {
     will-change: auto;
   }
 }
