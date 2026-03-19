@@ -12,12 +12,12 @@ const route = useRoute()
 
 const heroCopy: Record<HeroMode, { headline: string; body: string }> = {
   student: {
-    headline: 'Klíč, jak mít budoucnost trochu víc pod kontrolou!',
-    body: 'Budujeme generaci studentů s ambicí a měkkými kompetencemi, která mění svět. Staň se součástí a připrav se na budoucnost.',
+    headline: 'Klíč, jak mít budoucnost\ntrochu víc pod kontrolou!',
+    body: 'Budujeme generaci studentů s ambicí a měkkými kompetencemi,\nkterá mění svět. Staň se součástí a připrav se na budoucnost.',
   },
   company: {
-    headline: 'Klíč k talentům, kteří posunou vaši firmu dál!',
-    body: 'Propojujeme firmy s generací ambiciózních lidí, kteří jsou připraveni na reálný byznys. Zapojte se a buďte u jejich růstu od začátku.',
+    headline: 'Klíč, jak propojit vaši společnost\ns talenty nové generace!',
+    body: 'Budujeme generaci studentů s ambicí a měkkými kompetencemi,\nkterá mění svět. Zapojte se a buďte u jejich růstu od začátku.',
   },
 }
 
@@ -287,14 +287,14 @@ const toggleButtonClass = (mode: HeroMode) => {
         <div class="w-full max-w-[640px] self-end text-left md:-translate-y-4 md:translate-x-1 lg:translate-x-2">
           <h1
             ref="headlineRef"
-            class="hero-text-reveal text-2xl font-bold leading-tight transition-colors duration-300 md:text-4xl"
+            class="hero-text-reveal whitespace-pre-line text-2xl font-bold leading-tight transition-colors duration-300 md:text-4xl"
             :class="isCompanyMode ? 'text-brand-black' : 'text-brand-white'"
           >
             {{ currentHeroCopy.headline }}
           </h1>
           <p
             ref="bodyRef"
-            class="hero-text-reveal mt-4 text-sm leading-relaxed transition-colors duration-300 md:text-lg"
+            class="hero-text-reveal mt-4 whitespace-pre-line text-sm leading-relaxed transition-colors duration-300 md:text-lg"
             :class="isCompanyMode ? 'text-brand-black/70' : 'text-brand-white/72'"
           >
             {{ currentHeroCopy.body }}
@@ -303,7 +303,7 @@ const toggleButtonClass = (mode: HeroMode) => {
       </div>
     </div>
 
-    <div class="hero-toggle select-none absolute inset-x-0 bottom-6 z-20 flex justify-center px-3 sm:inset-x-auto sm:left-1/2 sm:w-auto sm:-translate-x-1/2 sm:px-0 sm:bottom-[8em]">
+    <div class="hero-toggle select-none absolute inset-x-0 bottom-6 z-20 flex justify-center px-3 sm:px-0 sm:bottom-[8em]">
       <div
         ref="togglePillRef"
         class="hero-toggle-pill-reveal inline-flex max-w-full justify-center rounded-full p-1.5 transition-colors duration-300"
@@ -407,14 +407,8 @@ const toggleButtonClass = (mode: HeroMode) => {
   .hero-toggle {
     position: relative;
     inset: auto;
-    left: auto;
     bottom: auto;
-    display: flex;
-    justify-content: center;
     width: 100%;
-    margin: 0 auto;
-    transform: none;
-    box-sizing: border-box;
     padding: 0 1.5rem 2.5rem;
   }
 }
