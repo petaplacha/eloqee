@@ -59,7 +59,7 @@
           <div class="bubble-row justify-center mt-2">
             <span class="bubble bg-brand-purple ml-4">Získej podporu na svoje nápady</span>
             <span class="bubble bg-brand-green ml-32">Nahlížej kriticky na složité problémy</span>
-            <span class="bubble bg-brand-magenta">Nesesipej se v náročných situacích</span>
+            <span class="bubble bg-brand-magenta">Nesesypej se v náročných situacích</span>
           </div>
         </div>
       </div>
