@@ -124,16 +124,15 @@ async function handleSubmit() {
   loading.value = true
   errorMsg.value = ''
   try {
-    const res = await fetch('https://script.google.com/macros/s/AKfycbyCb0kFyx7QLBum80zfVrCpocj8_e-YtXQuMAba9u9drslQli6e1Q6TRx2qCABbwqY/exec', {
+    const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdt2-fw4N3RzhjPHcuN0bgUCXM23QAWOPoGaFtD-qaR9KTufA/formResponse'
+    const data = new URLSearchParams()
+    data.append('entry.799033947', email.value)
+    data.append('entry.133476793_sentinel', 'Ano')
+    await fetch(formUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email.value, souhlas: 'Ano' })
+      body: data,
+      mode: 'no-cors'
     })
-    if (!res.ok) {
-      errorMsg.value = 'Odeslání se nezdařilo. Zkuste to prosím později.'
-      console.error('Chyba při odesílání:', await res.text())
-      return
-    }
     email.value = ''
     submitted.value = true
   } catch (e) {
