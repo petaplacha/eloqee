@@ -65,20 +65,68 @@
           <span class="font-bold">Chceš být u toho?</span>
         </p>
       </div>
-      <form class="w-full max-w-md mx-auto flex flex-col items-center gap-4">
-        <input type="email" placeholder="Tvůj e-mail" class="w-full rounded-full border border-brand-purple/30 px-6 py-3 text-base focus:outline-none focus:ring-2 focus:ring-brand-purple" />
+      <form v-if="!submitted" @submit.prevent="handleSubmit" class="w-full max-w-md mx-auto flex flex-col items-center gap-4">
+        <input
+          v-model="email"
+          type="email"
+          :placeholder="submitted ? 'Díky, dáme ti vědět.' : 'Tvůj e-mail'"
+          class="w-full rounded-full border border-brand-purple/30 px-6 py-3 text-base focus:outline-none focus:ring-2 focus:ring-brand-purple"
+          :disabled="loading"
+          required
+        />
         <div class="flex items-center w-full">
-          <input type="checkbox" id="gdpr" class="rounded mr-2" />
+          <input
+            v-model="consent"
+            type="checkbox"
+            id="gdpr"
+            class="rounded mr-2 accent-brand-purple focus:ring-brand-purple focus:ring-2"
+            :disabled="loading"
+            required
+          />
           <label for="gdpr" class="text-xs text-brand-black/70">Souhlasím, že si můžete uložit můj mail a poslat mi info před další ELOQEE Challenge</label>
         </div>
-        <button type="button" class="w-full rounded-full bg-brand-purple text-brand-white font-semibold py-3 px-6 mt-2 text-base shadow-md hover:bg-brand-purple/90 transition">Dejte mi vědět před dalším ročníkem</button>
+        <button
+          type="submit"
+          class="w-full rounded-full bg-brand-purple text-brand-white font-semibold py-3 px-6 mt-2 text-base shadow-md hover:bg-brand-purple/90 transition"
+          :disabled="loading"
+        >
+          {{ loading ? 'Odesílám...' : 'Dejte mi vědět před dalším ročníkem' }}
+        </button>
       </form>
+      <div v-else class="w-full max-w-md mx-auto flex flex-col items-center gap-4 py-8">
+        <div class="text-lg font-semibold text-brand-green mb-2">Děkujeme!</div>
+        <div class="text-base text-brand-black/80">Tvůj e-mail byl úspěšně uložen. Ozveme se před dalším ročníkem.</div>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import DecorativeLine from '../DecorativeLine.vue'
+
+const email = ref('')
+const consent = ref(false)
+const loading = ref(false)
+const submitted = ref(false)
+
+async function handleSubmit() {
+  if (!email.value || !consent.value) return
+  loading.value = true
+  try {
+    await fetch('https://script.google.com/macros/s/AKfycbyCb0kFyx7QLBum80zfVrCpocj8_e-YtXQuMAba9u9drslQli6e1Q6TRx2qCABbwqY/exec', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email.value, souhlas: 'Ano' })
+    })
+    email.value = ''
+    submitted.value = true
+  } catch (e) {
+    // případně zobrazit chybovou hlášku
+  } finally {
+    loading.value = false
+  }
+}
 </script>
 
 <style scoped>
