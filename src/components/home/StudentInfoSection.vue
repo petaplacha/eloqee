@@ -1,42 +1,96 @@
 <template>
-  <section class="student-info-section w-full bg-brand-paper text-brand-black py-16 px-4 flex flex-col items-center">
-    <div class="max-w-3xl text-center mb-10">
-      <h2 class="text-lg md:text-2xl font-normal mb-4 leading-relaxed">
-        <span class="font-bold">ELOQEE</span> je platforma pro rozvoj měkkých kompetencí, bez kterých se dneska neobjdeš. Pro studenty organizujeme <span class="font-bold">ELOQEE Challenge</span>, která tě skrz praktické výzvy připraví na realitu.
-      </h2>
+  <section class="student-info-section w-full bg-brand-paper text-brand-black py-16 px-4 flex flex-col items-center relative overflow-hidden responsive-bubble-section">
+    <div class="absolute inset-0 z-0 pointer-events-none select-none">
+      <DecorativeLine
+        :start="{ x: -80, y: 189.9 }"
+        :segments="[
+          { c1: { x: -61.33, y: 187.25 }, c2: { x: -41.83, y: 184.48 }, end: { x: 32, y: 174 } },
+          { c1: { x: 105.83, y: 163.51 }, c2: { x: 333.83, y: 107.5 }, end: { x: 363, y: 127 } },
+          { c1: { x: 392.16, y: 146.5 }, c2: { x: 221, y: 238.66 }, end: { x: 207, y: 291 } },
+          { c1: { x: 193, y: 343.33 }, c2: { x: 277.83, y: 404.5 }, end: { x: 279, y: 441 } },
+          { c1: { x: 280.16, y: 477.5 }, c2: { x: 212, y: 483.5 }, end: { x: 214, y: 510 } },
+          { c1: { x: 216, y: 536.5 }, c2: { x: 300.66, y: 573.5 }, end: { x: 291, y: 600 } },
+          { c1: { x: 281.33, y: 626.5 }, c2: { x: 174.66, y: 647.5 }, end: { x: 156, y: 669 } },
+          { c1: { x: 137.33, y: 690.5 }, c2: { x: 192.33, y: 718.66 }, end: { x: 179, y: 729 } },
+          { c1: { x: 165.66, y: 739.33 }, c2: { x: 119.16, y: 730.16 }, end: { x: 76, y: 731 } },
+          { c1: { x: 32.83, y: 731.83 }, c2: { x: -54, y: 733.52 }, end: { x: -80, y: 734.02 } },
+        ]"
+        color="green"
+        stroke-width="var(--decorative-line-stroke-width, 3.75em)"
+        view-box="-120 100 600 700"
+        class="absolute left-0 bottom-0 w-[min(100vw,700px)] h-auto max-h-[80vh] z-0 pointer-events-none -translate-x-80 -translate-y-16"
+      />
+      <DecorativeLine
+        :start="{ x: 1636, y: -63.16 }"
+        :segments="[
+          { c1: { x: 1616.67, y: -46.63 }, c2: { x: 1560, y: 1.81 }, end: { x: 1520, y: 36 } },
+          { c1: { x: 1480, y: 70.19 }, c2: { x: 1407, y: 105.83 }, end: { x: 1396, y: 142 } },
+          { c1: { x: 1385, y: 178.17 }, c2: { x: 1449.33, y: 215.33 }, end: { x: 1454, y: 253 } },
+          { c1: { x: 1458.67, y: 290.67 }, c2: { x: 1420.67, y: 326.83 }, end: { x: 1424, y: 368 } },
+          { c1: { x: 1427.33, y: 409.17 }, c2: { x: 1491.33, y: 461.17 }, end: { x: 1474, y: 500 } },
+          { c1: { x: 1456.67, y: 538.83 }, c2: { x: 1316.83, y: 576.17 }, end: { x: 1320, y: 601 } },
+          { c1: { x: 1323.17, y: 625.83 }, c2: { x: 1465.5, y: 632.33 }, end: { x: 1493, y: 649 } },
+          { c1: { x: 1520.5, y: 665.67 }, c2: { x: 1461.17, y: 692.33 }, end: { x: 1485, y: 701 } },
+          { c1: { x: 1508.83, y: 709.67 }, c2: { x: 1610.83, y: 701 }, end: { x: 1636, y: 701 } },
+        ]"
+        color="purple"
+        stroke-width="var(--decorative-line-stroke-width, 3.75em)"
+        view-box="1300 -100 400 850"
+        class="absolute right-0 top-0 w-[min(100vw,700px)] h-auto max-h-[80vh] z-0 pointer-events-none translate-x-72 translate-y-4"
+      />
     </div>
-    <div class="w-full flex flex-col items-center mb-10">
-      <div class="bubble-row-wrapper">
-        <div class="bubble-row justify-center">
-          <span class="bubble bg-brand-green ml-24">Udělej dobrý první dojem</span>
-          <span class="bubble bg-brand-magenta ml-8">Prosaď svoje názory mezi ostatními</span>
-          <span class="bubble bg-brand-purple ml-20">Zazáři na pohovoru v nejlepším světle</span>
-        </div>
-        <div class="bubble-row justify-center mt-2">
-          <span class="bubble bg-brand-purple ml-4">Získej podporu na svoje nápady</span>
-          <span class="bubble bg-brand-green ml-32">Nahlížej kriticky na složité problémy</span>
-          <span class="bubble bg-brand-magenta">Nesesypej se v náročných situacích</span>
+    <div class="relative z-10 w-full flex flex-col items-center">
+      <div class="max-w-3xl text-center mb-10">
+        <h2 class="text-lg md:text-2xl font-normal mb-4 leading-relaxed">
+          <span class="font-bold">ELOQEE</span> je platforma pro rozvoj měkkých kompetencí, bez kterých se dneska neobjdeš. Pro studenty organizujeme <span class="font-bold">ELOQEE Challenge</span>, která tě skrz praktické výzvy připraví na realitu.
+        </h2>
+      </div>
+      <div class="w-full flex flex-col items-center mb-10">
+        <div class="bubble-row-wrapper">
+          <div class="bubble-row justify-center">
+            <span class="bubble bg-brand-green ml-24">Udělej dobrý první dojem</span>
+            <span class="bubble bg-brand-magenta ml-8">Prosaď svoje názory mezi ostatními</span>
+            <span class="bubble bg-brand-purple ml-20">Zazáři na pohovoru v nejlepším světle</span>
+          </div>
+          <div class="bubble-row justify-center mt-2">
+            <span class="bubble bg-brand-purple ml-4">Získej podporu na svoje nápady</span>
+            <span class="bubble bg-brand-green ml-32">Nahlížej kriticky na složité problémy</span>
+            <span class="bubble bg-brand-magenta">Nesesipej se v náročných situacích</span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="max-w-3xl text-center mb-8">
-      <p class="text-base md:text-lg text-brand-black/70">
-        Spojujeme akademickou půdu se skutečnými nároky trhu práce a moderního světa.<br>
-        <span class="font-bold">Chceš být u toho?</span>
-      </p>
-    </div>
-    <form class="w-full max-w-md mx-auto flex flex-col items-center gap-4">
-      <input type="email" placeholder="Tvůj e-mail" class="w-full rounded-full border border-brand-purple/30 px-6 py-3 text-base focus:outline-none focus:ring-2 focus:ring-brand-purple" />
-      <div class="flex items-center w-full">
-        <input type="checkbox" id="gdpr" class="rounded mr-2" />
-        <label for="gdpr" class="text-xs text-brand-black/70">Souhlasím, že si můžete uložit můj mail a poslat mi info před další ELOQEE Challenge</label>
+      <div class="max-w-3xl text-center mb-8">
+        <p class="text-base md:text-lg text-brand-black/70">
+          Spojujeme akademickou půdu se skutečnými nároky trhu práce a moderního světa.<br>
+          <span class="font-bold">Chceš být u toho?</span>
+        </p>
       </div>
-      <button type="button" class="w-full rounded-full bg-brand-purple text-brand-white font-semibold py-3 px-6 mt-2 text-base shadow-md hover:bg-brand-purple/90 transition">Dejte mi vědět před dalším ročníkem</button>
-    </form>
+      <form class="w-full max-w-md mx-auto flex flex-col items-center gap-4">
+        <input type="email" placeholder="Tvůj e-mail" class="w-full rounded-full border border-brand-purple/30 px-6 py-3 text-base focus:outline-none focus:ring-2 focus:ring-brand-purple" />
+        <div class="flex items-center w-full">
+          <input type="checkbox" id="gdpr" class="rounded mr-2" />
+          <label for="gdpr" class="text-xs text-brand-black/70">Souhlasím, že si můžete uložit můj mail a poslat mi info před další ELOQEE Challenge</label>
+        </div>
+        <button type="button" class="w-full rounded-full bg-brand-purple text-brand-white font-semibold py-3 px-6 mt-2 text-base shadow-md hover:bg-brand-purple/90 transition">Dejte mi vědět před dalším ročníkem</button>
+      </form>
+    </div>
   </section>
 </template>
 
+<script setup lang="ts">
+import DecorativeLine from '../DecorativeLine.vue'
+</script>
+
 <style scoped>
+.responsive-bubble-section {
+  --decorative-line-stroke-width: 3.75em;
+}
+@media (max-width: 48rem) {
+  .responsive-bubble-section {
+    --decorative-line-stroke-width: 2em;
+  }
+}
+
 .bubble {
   display: inline-block;
   font-weight: 600;
@@ -130,5 +184,17 @@
     padding-left: 1.2em;
     padding-right: 1.2em;
   }
+}
+
+.bezier-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+.bezier-overlay :deep(canvas),
+.bezier-overlay :deep(svg),
+.bezier-overlay :deep(.absolute) {
+  pointer-events: auto;
 }
 </style>
