@@ -96,6 +96,7 @@
         >
           {{ loading ? 'Odesílám...' : 'Dejte mi vědět před dalším ročníkem' }}
         </button>
+        <div v-if="errorMsg" class="text-sm text-red-600 mt-2">{{ errorMsg }}</div>
       </form>
       <div v-else class="w-full max-w-md mx-auto flex flex-col items-center gap-4 py-8">
         <div class="text-lg font-semibold text-brand-green mb-2">Děkujeme!</div>
@@ -116,20 +117,28 @@ const submitted = ref(false)
 const linesVisible = ref(false)
 const linesAnimated = ref(false)
 const sectionRef = ref<HTMLElement | null>(null)
+const errorMsg = ref('')
 
 async function handleSubmit() {
   if (!email.value || !consent.value) return
   loading.value = true
+  errorMsg.value = ''
   try {
-    await fetch('https://script.google.com/macros/s/AKfycbyCb0kFyx7QLBum80zfVrCpocj8_e-YtXQuMAba9u9drslQli6e1Q6TRx2qCABbwqY/exec', {
+    const res = await fetch('https://script.google.com/macros/s/AKfycbyCb0kFyx7QLBum80zfVrCpocj8_e-YtXQuMAba9u9drslQli6e1Q6TRx2qCABbwqY/exec', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email.value, souhlas: 'Ano' })
     })
+    if (!res.ok) {
+      errorMsg.value = 'Odeslání se nezdařilo. Zkuste to prosím později.'
+      console.error('Chyba při odesílání:', await res.text())
+      return
+    }
     email.value = ''
     submitted.value = true
   } catch (e) {
-    // případně zobrazit chybovou hlášku
+    errorMsg.value = 'Odeslání se nezdařilo. Zkuste to prosím později.'
+    console.error('Chyba při fetch:', e)
   } finally {
     loading.value = false
   }
