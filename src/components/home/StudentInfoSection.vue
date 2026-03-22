@@ -1,5 +1,5 @@
 <template>
-  <section class="student-info-section w-full bg-brand-paper text-brand-black py-16 px-4 flex flex-col items-center relative overflow-hidden responsive-bubble-section">
+  <section ref="sectionRef" class="student-info-section w-full bg-brand-paper text-brand-black py-16 px-4 flex flex-col items-center relative overflow-hidden responsive-bubble-section">
     <div class="absolute inset-0 z-0 pointer-events-none select-none">
       <DecorativeLine
         :start="{ x: -80, y: 189.9 }"
@@ -18,6 +18,8 @@
         color="green"
         stroke-width="var(--decorative-line-stroke-width, 3.75em)"
         view-box="-120 100 600 700"
+        :draw-duration="linesAnimated ? 1.2 : 0"
+        :draw-delay="linesAnimated ? 0.2 : 0"
         class="absolute left-0 bottom-0 w-[min(100vw,700px)] h-auto max-h-[80vh] z-0 pointer-events-none -translate-x-80 -translate-y-16"
       />
       <DecorativeLine
@@ -36,6 +38,8 @@
         color="purple"
         stroke-width="var(--decorative-line-stroke-width, 3.75em)"
         view-box="1300 -100 400 850"
+        :draw-duration="linesAnimated ? 1.2 : 0"
+        :draw-delay="linesAnimated ? 0.5 : 0"
         class="absolute right-0 top-0 w-[min(100vw,700px)] h-auto max-h-[80vh] z-0 pointer-events-none translate-x-72 translate-y-4"
       />
     </div>
@@ -102,13 +106,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import DecorativeLine from '../DecorativeLine.vue'
 
 const email = ref('')
 const consent = ref(false)
 const loading = ref(false)
 const submitted = ref(false)
+const linesVisible = ref(false)
+const linesAnimated = ref(false)
+const sectionRef = ref<HTMLElement | null>(null)
 
 async function handleSubmit() {
   if (!email.value || !consent.value) return
@@ -127,6 +134,21 @@ async function handleSubmit() {
     loading.value = false
   }
 }
+
+let observer: IntersectionObserver | null = null
+onMounted(() => {
+  observer = new window.IntersectionObserver(
+    ([entry]) => {
+      linesVisible.value = entry.isIntersecting
+      if (entry.isIntersecting) linesAnimated.value = true
+    },
+    { threshold: 0.15 }
+  )
+  if (sectionRef.value) observer.observe(sectionRef.value)
+})
+onBeforeUnmount(() => {
+  if (observer && sectionRef.value) observer.unobserve(sectionRef.value)
+})
 </script>
 
 <style scoped>
