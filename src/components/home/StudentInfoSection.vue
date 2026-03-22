@@ -100,7 +100,9 @@
       </form>
       <div v-else class="w-full max-w-md mx-auto flex flex-col items-center gap-4 py-8">
         <div class="text-lg font-semibold text-brand-green mb-2">Děkujeme!</div>
-        <div class="text-base text-brand-black/80">Tvůj e-mail byl úspěšně uložen. Ozveme se před dalším ročníkem.</div>
+        <div class="text-base text-brand-black/80 whitespace-nowrap overflow-auto">
+          Tvůj e-mail byl úspěšně uložen. Ozveme se ti před dalším ročníkem!
+        </div>
       </div>
     </div>
   </section>
@@ -126,8 +128,8 @@ async function handleSubmit() {
   try {
     const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdt2-fw4N3RzhjPHcuN0bgUCXM23QAWOPoGaFtD-qaR9KTufA/formResponse'
     const data = new URLSearchParams()
-    data.append('entry.799033947', email.value)
-    data.append('entry.133476793_sentinel', 'Ano')
+    data.append('entry.748681136', email.value) // opravený entry kód pro e-mail
+    data.append('entry.133476793', 'Ano')
     await fetch(formUrl, {
       method: 'POST',
       body: data,
