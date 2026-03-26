@@ -59,7 +59,7 @@
           <div class="bubble-row justify-center mt-2">
             <span class="bubble bg-brand-purple ml-4">Získej podporu na svoje nápady</span>
             <span class="bubble bg-brand-green ml-32">Nahlížej kriticky na složité problémy</span>
-            <span class="bubble bg-brand-magenta">Nesesypej se v náročných situacích</span>
+            <span class="bubble bg-brand-magenta">Nesesipej se v náročných situacích</span>
           </div>
         </div>
       </div>
@@ -106,6 +106,46 @@
       </div>
     </div>
   </section>
+
+  <!-- Sekce tým -->
+  <section class="team-section w-full bg-brand-paper text-brand-black py-16 px-4 flex flex-col items-center">
+    <div class="max-w-2xl w-full text-center mb-10">
+      <h2 class="text-2xl md:text-3xl font-bold mb-4">Zaujali jsme tě? Pojď se s námi spojit!</h2>
+    </div>
+    <div class="flex flex-col md:flex-row gap-10 w-full max-w-3xl justify-center items-stretch">
+      <!-- David Ryba -->
+      <div class="flex flex-col items-center bg-white/80 rounded-2xl shadow-md p-6 flex-1">
+        <img src="/src/assets/david.webp" alt="David Ryba" class="w-32 h-32 object-cover rounded-full mb-4 border-4 border-brand-green shadow" style="object-position: 40% 50%;" />
+        <h3 class="text-xl font-semibold mb-1">David Ryba</h3>
+        <div class="text-brand-black/70 mb-2">Co-founder a vedoucí projektu</div>
+        <a href="https://www.linkedin.com/in/david-ryba/" target="_blank" rel="noopener" class="text-brand-purple underline mb-1">LinkedIn</a>
+        <div class="mb-1">david@eloqee.cz</div>
+        <div>+420 604 708 231</div>
+      </div>
+      <!-- Petra Plachá -->
+      <div class="flex flex-col items-center bg-white/80 rounded-2xl shadow-md p-6 flex-1">
+        <img src="/src/assets/peta.webp" alt="Petra Plachá" class="w-32 h-32 object-cover rounded-full mb-4 border-4 border-brand-magenta shadow" style="object-position: 70% 50%;" />
+        <h3 class="text-xl font-semibold mb-1">Petra Plachá</h3>
+        <div class="text-brand-black/70 mb-2">Co-founderka a hlavní metodička</div>
+        <a href="https://www.linkedin.com/in/petra-placha/" target="_blank" rel="noopener" class="text-brand-purple underline mb-1">LinkedIn</a>
+        <div class="mb-1">petra@eloqee.cz</div>
+        <div>+420 722 482 974</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Patička -->
+  <footer class="w-full text-brand-paper py-3 px-4 flex items-center justify-between border-t border-brand-black/70" style="background: rgb(48, 48, 48);">
+    <div class="flex-1 flex justify-start items-center">
+      <img src="/src/assets/logo-bila.svg" alt="ELOQEE logo" class="h-6 w-auto mr-4 opacity-80" />
+    </div>
+    <div class="flex-1 flex justify-center">
+      <span class="text-xs tracking-wide">© ELOQEE, 2026</span>
+    </div>
+    <div class="flex-1 flex justify-end items-center">
+      <a href="https://dovedu.org" target="_blank" rel="noopener" class="ml-6 text-xs font-bold text-brand-paper/90 hover:text-brand-white transition" style="text-decoration: none;">dovedu.org</a>
+    </div>
+  </footer>
 </template>
 
 <script setup lang="ts">
